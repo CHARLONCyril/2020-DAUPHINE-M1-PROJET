@@ -1,1 +1,26 @@
-= 2020-DAUPHINE-M1-PROJET
+= JAVATEST2
+
+image:https://travis-ci.org/CHARLONCyril/2020-DAUPHINE-M1-PROJET.svg?branch=master["Build Status", link="https://travis-ci.com/CHARLONCyril/2020-DAUPHINE-M1-PROJET"]
+
+Projet Java développé par des étudiants à rendre avant le 05/03/2020, dans le cadre du https://github.com/emerite-neou/2019-DAUPHINE-M1[cours de JAVA] enseigné à l'Université Paris-Dauphine (en http://www.mido.dauphine.fr/[MIDO M1 Apprentissage]).
+
+Le code est publié sous licence MIT.
+
+= *Plan détaillé des différentes livraisons* :
+
+Tâches à réaliser pour la *première livraison (avant le 21/02/2020)* :
+
+* Mise en place de Maven et de Travis qui est un logiciel d'intégration continue permettant d'avoir (presque) en permanence une version actuelle et intégrée de notre logiciel contenant tous les développements à ce jour,
+
+* Réalisation d'un diagramme de classe pour visualiser la structure globale du projet et commencer à réfléchir sur la structure du code (héritage, interface, etc) et étude des différents modules permettant de parser des fichiers CSV et JSON,
+
+* Création des classes permettant le parsing des fichiers CSV, JSON et classes de tests associées.
+
+Tâches à réaliser pour la *deuxième livraison (avant le 28/02/2020)* :
+
+* Réalisation des classes contenant les listes de règles et les listes de fonctions d'anonymisation et implémentation des mécanismes permettant d'appeler ces différentes fonctions.
+
+Tâches à réaliser pour la *troisième livraison (avant le 05/03/2020)* :
+
+* Réalisation des différents bonus comme la mise en place d'un système de log, lecture de fichiers en mode colonnes, zipper et ou dézipper des fichiers. 
+
