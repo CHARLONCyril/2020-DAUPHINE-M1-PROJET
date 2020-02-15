@@ -1,4 +1,4 @@
-= JAVATEST2
+= 2020-DAUPHINE-M1-PROJET
 
 image:https://travis-ci.org/CHARLONCyril/2020-DAUPHINE-M1-PROJET.svg?branch=master["Build Status", link="https://travis-ci.com/CHARLONCyril/2020-DAUPHINE-M1-PROJET"]
 
