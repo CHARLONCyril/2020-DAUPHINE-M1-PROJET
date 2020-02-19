@@ -1,17 +1,18 @@
 package io.github.charloncyril.csv_utils;
 
 import static org.junit.Assert.*;
-import java.io.File;
 import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.Test;
+
+import io.github.charloncyril.file_utils.FileUtils;
 
 public class CSVUtilsTest {
 
 	private List<String[]> csvRows;
 
 	public CSVUtilsTest() {
-		csvRows = CSVUtils.readRowOrientedFile(new File("src/test/resources/info.csv"));
+		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/","info.csv"));
 	}
 
 	@Test
@@ -21,7 +22,7 @@ public class CSVUtilsTest {
 
 	@Test
 	public void test_writeIntoCSVFile() {
-		Assertions.assertThatCode(() -> CSVUtils.writeIntoCSVFile(new File("src/test/resources/info.csv"), csvRows))
+		Assertions.assertThatCode(() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/","info.csv"), csvRows))
 				.doesNotThrowAnyException();
 	}
 
