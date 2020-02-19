@@ -4,6 +4,8 @@ import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import com.google.common.base.Preconditions;
+
 public class FileUtils {
 	private FileUtils() {
 		throw new IllegalStateException("Utility class");
@@ -15,6 +17,10 @@ public class FileUtils {
 	 * @return the path of the file @param fileName
 	 */
 	public static Path getPath(String folder, String fileName) {
+		Preconditions.checkNotNull(folder);
+		Preconditions.checkArgument(!folder.isEmpty());
+		Preconditions.checkNotNull(fileName);
+		Preconditions.checkArgument(!fileName.isEmpty());
 		return Paths.get(folder, fileName);
 	}
 
@@ -24,6 +30,10 @@ public class FileUtils {
 	 * @return the file expected
 	 */
 	public static File getFile(String folder, String fileName) {
+		Preconditions.checkNotNull(folder);
+		Preconditions.checkArgument(!folder.isEmpty());
+		Preconditions.checkNotNull(fileName);
+		Preconditions.checkArgument(!fileName.isEmpty());
 		return new File(getPath(folder, fileName).toString());
 	}
 
