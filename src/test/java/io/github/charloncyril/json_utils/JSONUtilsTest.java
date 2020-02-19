@@ -4,6 +4,9 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import org.junit.Test;
+
+import io.github.charloncyril.models.AnonymizeColumn;
+import io.github.charloncyril.models.RulesColumn;
 import io.github.charloncyril.models.TypeColumn;
 
 public class JSONUtilsTest {
@@ -14,6 +17,17 @@ public class JSONUtilsTest {
 		T[] array = (T[]) JSONUtils.readJson(new File("src/test/resources/csv_description.json"), TypeColumn[].class);
 		assertNotNull(array);
 		assertTrue(array instanceof TypeColumn[]);
+
+		array = (T[]) JSONUtils.readJson(new File("src/test/resources/csv_verification_rules.json"),
+				RulesColumn[].class);
+		assertNotNull(array);
+		assertTrue(array instanceof RulesColumn[]);
+
+		array = (T[]) JSONUtils.readJson(new File("src/test/resources/csv_anonymization_rules.json"),
+				AnonymizeColumn[].class);
+		assertNotNull(array);
+		assertTrue(array instanceof AnonymizeColumn[]);
+
 	}
 
 }
