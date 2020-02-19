@@ -1,30 +1,17 @@
 package io.github.charloncyril.csv_utils;
 
-import static io.github.charloncyril.constants.Constants.EMPTY_VALUE;
-import static io.github.charloncyril.constants.Constants.LINE_DELIMITER_FOR_WRITING;
-
+import com.google.common.base.Preconditions;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
-
+import io.github.charloncyril.constants.Constants;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class CSVUtils {
-
-	/**
-	 * FIELD_DELIMITER is the field delimiter character during the parsing
-	 */
-	private static final char FIELD_DELIMITER = setFieldDelimitter();
-
-	/**
-	 * LINE_DELIMITER_FOR_PARSING is the line separator sequence during the parsing
-	 */
-	private static final String LINE_DELIMITER_FOR_PARSING = setLineDelimitter();
 
 	/**
 	 * parserSettings represents the different options used during the parsing
@@ -45,8 +32,8 @@ public class CSVUtils {
 	 */
 	public static CsvParserSettings getParserSetting() {
 		CsvParserSettings parserSettings = new CsvParserSettings();
-		parserSettings.getFormat().setDelimiter(FIELD_DELIMITER);
-		parserSettings.getFormat().setLineSeparator(LINE_DELIMITER_FOR_PARSING);
+		parserSettings.getFormat().setDelimiter(Constants.getFieldDelimitterForParsing());
+		parserSettings.getFormat().setLineSeparator(Constants.getLineDelimitterForParsing());
 		return parserSettings;
 	}
 
@@ -55,9 +42,9 @@ public class CSVUtils {
 	 */
 	public static CsvWriterSettings getParserWritingSetting() {
 		CsvWriterSettings parserSettings = new CsvWriterSettings();
-		parserSettings.setEmptyValue(EMPTY_VALUE);
-		parserSettings.getFormat().setDelimiter(FIELD_DELIMITER);
-		parserSettings.getFormat().setLineSeparator(LINE_DELIMITER_FOR_WRITING);
+		parserSettings.setEmptyValue(Constants.getDefaultValue());
+		parserSettings.getFormat().setDelimiter(Constants.getFieldDelimitterForWriting());
+		parserSettings.getFormat().setLineSeparator(Constants.getLineDelimitterForWriting());
 		return parserSettings;
 	}
 
@@ -67,6 +54,7 @@ public class CSVUtils {
 	 *         each line of the file parsed
 	 */
 	public static List<String[]> readRowOrientedFile(File fileName) {
+		Preconditions.checkNotNull(fileName);
 		RowListProcessor rowProcessor = new RowListProcessor();
 		parserSettings.setHeaderExtractionEnabled(true);
 		parserSettings.setProcessor(rowProcessor);
@@ -83,6 +71,9 @@ public class CSVUtils {
 	 * @param rows     data to write
 	 */
 	public static void writeIntoCSVFile(File fileName, List<String[]> rows) {
+		Preconditions.checkNotNull(fileName);
+		Preconditions.checkNotNull(rows);
+		Preconditions.checkArgument(!rows.isEmpty());
 		settings.setHeaders(rows.remove(0));
 		CsvWriter writer = new CsvWriter(fileName, settings);
 		writer.writeHeaders();
@@ -93,31 +84,32 @@ public class CSVUtils {
 	}
 
 	/**
-	 * @return the field delimiter chosen by user
+	 * @param custom is the name of the custom param to modify
+	 * @param val    is the new val for @param custom
 	 */
-	@SuppressWarnings("resource")
-	public static char setFieldDelimitter() {
-		System.out.println("Please choose a field delimitter before starting (a sequence of 1 characters): ");
-		Scanner s = new Scanner(System.in);
-		return s.nextLine().charAt(0);
-	}
-
-	/**
-	 * @return the line delimiter chosen by user
-	 */
-	@SuppressWarnings("resource")
-	public static String setLineDelimitter() {
-		String lineDel = null;
-		boolean isValid = false;
-		while (!isValid) {
-			System.out.println(
-					"Please choose a line delimitter before starting to parse (a sequence of 1 to 2 characters):");
-			Scanner s = new Scanner(System.in);
-			lineDel = s.nextLine();
-			if (lineDel.length() == 1 || lineDel.length() == 2) {
-				isValid = true;
-			}
+	public static void setFieldSeparatorParams(CustomParsing custom, String val) {
+		Preconditions.checkNotNull(val, "The custom param value to modify can't be null ");
+		Preconditions.checkArgument(!val.isEmpty(), "The custom param value can't be empty ");
+		switch (custom) {
+		case DEFAULT_VALUE:
+			Constants.setDefaultValue(val);
+			break;
+		case FIELD_DELIMITER_FOR_PARSING:
+			Preconditions.checkArgument(val.length() == 1, "Field delimitter must be a sequence of 1 character");
+			Constants.setFieldDelimitterForParsing(val.charAt(0));
+			break;
+		case FIELD_DELIMITER_FOR_WRITING:
+			Preconditions.checkArgument(val.length() == 1, "Field delimitter must be a sequence of 1 character");
+			Constants.setFieldDelimitterForWriting(val.charAt(0));
+			break;
+		case LINE_DELIMITER_FOR_PARSING:
+			Preconditions.checkArgument(val.length() <= 2, "Line delimitter must be a sequence of 1 to 2 characters");
+			Constants.setLineDelimitterForParsing(val);
+			break;
+		case LINE_DELIMITER_FOR_WRITING:
+			Preconditions.checkArgument(val.length() <= 2, "Line delimitter must be a sequence of 1 to 2 characters");
+			Constants.setLineDelimitterForWriting(val);
+			break;
 		}
-		return lineDel;
 	}
 }
