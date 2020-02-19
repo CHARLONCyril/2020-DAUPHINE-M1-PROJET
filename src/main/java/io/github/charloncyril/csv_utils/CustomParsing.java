@@ -1,0 +1,6 @@
+package io.github.charloncyril.csv_utils;
+
+public enum CustomParsing {
+	DEFAULT_VALUE, LINE_DELIMITER_FOR_WRITING, LINE_DELIMITER_FOR_PARSING, FIELD_DELIMITER_FOR_WRITING,
+	FIELD_DELIMITER_FOR_PARSING,
+}
