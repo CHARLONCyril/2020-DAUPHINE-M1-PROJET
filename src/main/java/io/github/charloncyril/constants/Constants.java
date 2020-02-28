@@ -1,5 +1,8 @@
 package io.github.charloncyril.constants;
 
+import java.util.Arrays;
+import java.util.List;
+
 public final class Constants {
 
 	private Constants() {
@@ -34,6 +37,13 @@ public final class Constants {
 	 * LINE_DELIMITER_FOR_PARSING is the line separator sequence during the parsing
 	 */
 	private static String LINE_DELIMITER_FOR_PARSING = "\n";
+	
+	/**
+	 * list containing all host email part corresponding to Paris Dauphine email
+	 * address
+	 */
+	public static final List<String> PATTERN_MAIL = Arrays.asList("lamsade.dauphine.fr", "dauphine.eu",
+			"dauphine.psl.eu");
 
 	public static char getFieldDelimitterForParsing() {
 		return FIELD_DELIMITER_FOR_PARSING;

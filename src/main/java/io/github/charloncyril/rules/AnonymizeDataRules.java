@@ -12,9 +12,9 @@ import com.google.common.hash.Hashing;
  * Class bringing all the rules used for anonymization
  *
  */
-public class AnonymizeData {
+public class AnonymizeDataRules {
 
-	private AnonymizeData() {
+	private AnonymizeDataRules() {
 		throw new IllegalStateException("Utility class");
 	}
 
@@ -31,7 +31,7 @@ public class AnonymizeData {
 		Preconditions.checkNotNull(name);
 		Preconditions.checkArgument(!name.isEmpty());
 		Preconditions.checkNotNull(parameterTypes);
-		return AnonymizeData.class.getMethod(name, parameterTypes);
+		return AnonymizeDataRules.class.getMethod(name, parameterTypes);
 	}
 
 	/**
