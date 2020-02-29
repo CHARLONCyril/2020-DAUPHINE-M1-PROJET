@@ -91,22 +91,20 @@ public class FunctionsUtilsTest {
 	@Test
 	public void test_verifData() {
 		FunctionsUtils.verifData(myCsv, typeColumn, rulesColumn, RESSOURCES_FOLDER_TEST.toString(),
-				"testVerifyData.csv");
+				"testVerifyData.csv", false);
 		assertTrue(new File(RESSOURCES_FOLDER_TEST + "/testVerifyData.csv").exists());
 	}
 
 	@Test
-	public void test_checkConditionBeforeInsertInCSV() {
-		assertTrue(FunctionsUtils.checkConditionBeforeInsertInCSV(myCsv.get(0), header, typeColumn, rulesColumn));
-		rulesColumn.replace(header[0], Arrays.asList("beAnEmailDauhpine"));
-		assertFalse(FunctionsUtils.checkConditionBeforeInsertInCSV(myCsv.get(0), header, typeColumn, rulesColumn));
+	public void test_checkDataBeforeInsertInCSV() {
+		assertTrue(FunctionsUtils.checkDataTypeBeforeInsertInCSV(myCsv.get(0), header, typeColumn));
 	}
 
 	@Test
 	public void test_anonimyzeData() {
 		myCsv.add(0, header);
 		FunctionsUtils.anonimyzeData(myCsv, typeColumn, anonymizeColumn, RESSOURCES_FOLDER_TEST.toString(),
-				"testAnonymizeData.csv");
+				"testAnonymizeData.csv", false);
 		assertTrue(new File(RESSOURCES_FOLDER_TEST + "/testAnonymizeData.csv").exists());
 	}
 

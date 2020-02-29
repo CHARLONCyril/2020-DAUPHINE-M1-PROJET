@@ -8,9 +8,11 @@ import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import io.github.charloncyril.constants.Constants;
+import io.github.charloncyril.file_utils.ZipUtils;
 import io.github.charloncyril.log.Logger;
 import io.github.charloncyril.rules.FunctionsUtils;
-
+import static io.github.charloncyril.constants.Constants.RESSOURCES_FOLDER;
+import static io.github.charloncyril.constants.Constants.OUTPUT_DIRECTORY;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -69,16 +71,17 @@ public class CSVUtils {
 		rows.addAll(rowProcessor.getRows());
 		return rows;
 	}
-	
-	public static List<String[]> readColumnOrientedFile(File fileName) {
 
-		ColumnProcessor columnProcessor = new ColumnProcessor();
-		parserSettings.setProcessor(columnProcessor);
+	public static List<String[]> readColumnOrientedFile(File fileName) {
+		Preconditions.checkNotNull(fileName);
+		ColumnProcessor rowProcessor = new ColumnProcessor();
+		parserSettings.setRowProcessor(rowProcessor);
 		CsvParser parser = new CsvParser(parserSettings);
+		Logger.logContentParse(CSVUtils.class, parserSettings);
 		parser.parse(fileName);
 		List<String[]> csv = new ArrayList<>();
 		List<List<String>> column = new ArrayList<>();
-		column.addAll(columnProcessor.getColumnValuesAsList());
+		column.addAll(rowProcessor.getColumnValuesAsList());
 		for (List<String> c : column) {
 			csv.add(FunctionsUtils.convertCollectionToArray(c));
 		}
@@ -91,7 +94,7 @@ public class CSVUtils {
 	 * @param fileName is the output file
 	 * @param rows     data to write
 	 */
-	public static void writeIntoCSVFile(File fileName, List<String[]> rows) {
+	public static void writeIntoCSVFile(File fileName, List<String[]> rows, boolean wantToZipFile) {
 		Preconditions.checkNotNull(fileName);
 		Preconditions.checkNotNull(rows);
 		Preconditions.checkArgument(!rows.isEmpty());
@@ -102,6 +105,10 @@ public class CSVUtils {
 			writer.writeRow(row);
 		}
 		writer.close();
+		if (wantToZipFile) {
+			ZipUtils.zipFile(fileName, RESSOURCES_FOLDER + OUTPUT_DIRECTORY + "/"
+					+ fileName.getName().substring(0, fileName.getName().lastIndexOf('.')) + ".zip");
+		}
 	}
 
 	/**

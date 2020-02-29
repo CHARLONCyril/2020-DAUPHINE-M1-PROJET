@@ -3,6 +3,7 @@ package io.github.charloncyril.rules;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -128,16 +129,17 @@ public class FunctionsUtils {
 	 * @param fileName the file were we will write the result
 	 */
 	public static void verifData(List<String[]> myCsv, Map<String, TypeData> typeColumn,
-			Map<String, List<String>> rulesColumn, String folder, String fileName) {
+			Map<String, List<String>> rulesColumn, String folder, String fileName, boolean choice) {
 		ArrayList<String[]> rowToWrite = new ArrayList<>();
 		Preconditions.checkNotNull(myCsv);
 		Preconditions.checkNotNull(typeColumn);
 		Preconditions.checkNotNull(rulesColumn);
 		Preconditions.checkNotNull(fileName);
 		Preconditions.checkArgument(!fileName.isEmpty());
+		Preconditions.checkNotNull(choice);
 		rowToWrite.add(myCsv.remove(0)); // add the header of the CSV to our list
 		for (String[] row : myCsv) {
-			if (checkDataBeforeInsertInCSV(row, rowToWrite.get(0), typeColumn)) {
+			if (checkDataTypeBeforeInsertInCSV(row, rowToWrite.get(0), typeColumn)) {
 				if (allRulesValid(row, rowToWrite.get(0), rulesColumn)) {
 					rowToWrite.add(row);
 				} else {
@@ -148,39 +150,8 @@ public class FunctionsUtils {
 				// during writing process
 			}
 		}
-		CSVUtils.writeIntoCSVFile(FileUtils.getFile(folder, fileName), rowToWrite);
-	}
-
-	/**
-	 * 
-	 * @param row         is the line currently tested
-	 * @param header      is the header of the file
-	 * @param typeColumn  type of all the column of the file
-	 * @param rulesColumn all the rules for each column
-	 * @return true if all fields respect the correct type and the rules and false
-	 *         otherwise
-	 */
-	public static boolean checkConditionBeforeInsertInCSV(String[] row, String[] header,
-			Map<String, TypeData> typeColumn, Map<String, List<String>> rulesColumn) {
-		Preconditions.checkNotNull(row);
-		Preconditions.checkNotNull(header);
-		Preconditions.checkNotNull(typeColumn);
-		if (typeColumn.size() < header.length) {
-			return false;
-		}
-		for (int i = 0; i < header.length; i++) {
-			try {
-				if ((typeColumn.get(header[i]) == null) || !checkColumnType(row[i], typeColumn.get(header[i]))
-						|| ((rulesColumn.get(header[i]) != null)
-								&& !checkColumnRules(row[i], rulesColumn.get(header[i])))) {
-					return false;
-				}
-			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException
-					| NullPointerException e) {
-				return false;
-			}
-		}
-		return true;
+		// Logger.logContentParse(FunctionsUtils.class, rowToWrite);
+		CSVUtils.writeIntoCSVFile(FileUtils.getFile(folder, fileName), rowToWrite, choice);
 	}
 
 	/**
@@ -190,14 +161,21 @@ public class FunctionsUtils {
 	 * @param typeColumn correspond to type of each column
 	 * @return true if all data are in the good type false otherwise
 	 */
-	public static boolean checkDataBeforeInsertInCSV(String[] row, String[] header, Map<String, TypeData> typeColumn) {
+	public static boolean checkDataTypeBeforeInsertInCSV(String[] row, String[] header,
+			Map<String, TypeData> typeColumn) {
+		if (header.length > typeColumn.size()) {
+			return false;
+		}
 		for (int i = 0; i < header.length; i++) {
 			try {
+				System.out.println(header[i] + " => " + row[i]);
 				if ((typeColumn.get(header[i]) == null) || !checkColumnType(row[i], typeColumn.get(header[i]))) {
+					System.out.println("cyril");
 					return false;
 				}
 			} catch (NullPointerException e) {
 				// TODO: Add log for each exceptions when it will be implemented
+				System.out.println("charlon");
 				return false;
 			}
 		}
@@ -214,7 +192,7 @@ public class FunctionsUtils {
 	public static boolean allRulesValid(String[] row, String[] header, Map<String, List<String>> rulesColumn) {
 		for (int i = 0; i < header.length; i++) {
 			try {
-				if (!checkColumnRules(row[i], rulesColumn.get(header[i]))) {
+				if ((rulesColumn.get(header[i]) != null) && !checkColumnRules(row[i], rulesColumn.get(header[i]))) {
 					return false;
 				}
 			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
@@ -234,12 +212,13 @@ public class FunctionsUtils {
 	 * @param fileName the file were we will write the result
 	 */
 	public static void anonimyzeData(List<String[]> myCsv, Map<String, TypeData> typeColumn,
-			Map<String, String> anonymizeColumn, String folder, String fileName) {
+			Map<String, String> anonymizeColumn, String folder, String fileName, boolean choice) {
 		Preconditions.checkNotNull(myCsv);
 		Preconditions.checkNotNull(anonymizeColumn);
 		Preconditions.checkNotNull(fileName);
 		Preconditions.checkNotNull(typeColumn);
 		Preconditions.checkArgument(!fileName.isEmpty());
+		Preconditions.checkNotNull(choice);
 		ArrayList<String[]> rowToWrite = new ArrayList<>();
 		String[] csvHeader = myCsv.remove(0);
 		rowToWrite.add(csvHeader); // Default header
@@ -250,8 +229,8 @@ public class FunctionsUtils {
 				if (anonymizeColumn.get(csvHeader[i]) != null) {
 					headerColumnAnonymised.add(csvHeader[i]);
 					try {
-						if (checkDataBeforeInsertInCSV(row, convertCollectionToArray(headerColumnAnonymised),
-								typeColumn)) {
+						if (checkDataTypeBeforeInsertInCSV(convertCollectionToArray(Arrays.asList(row[i])),
+								convertCollectionToArray(Arrays.asList(csvHeader[i])), typeColumn)) {
 							rowValueAnonymized.add(dataAnonymized(row[i], anonymizeColumn.get(csvHeader[i])));
 						} else {
 							rowValueAnonymized.add("");
@@ -264,7 +243,7 @@ public class FunctionsUtils {
 			rowToWrite.add(convertCollectionToArray(rowValueAnonymized));
 		}
 		rowToWrite.set(0, convertCollectionToArray(headerColumnAnonymised));
-		CSVUtils.writeIntoCSVFile(FileUtils.getFile(folder, fileName), rowToWrite);
+		CSVUtils.writeIntoCSVFile(FileUtils.getFile(folder, fileName), rowToWrite, choice);
 	}
 
 }
