@@ -12,7 +12,7 @@ public class CSVUtilsTest {
 	private List<String[]> csvRows;
 
 	public CSVUtilsTest() {
-		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/","info.csv"));
+		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
 	}
 
 	@Test
@@ -22,7 +22,9 @@ public class CSVUtilsTest {
 
 	@Test
 	public void test_writeIntoCSVFile() {
-		Assertions.assertThatCode(() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/","info.csv"), csvRows))
+		Assertions
+				.assertThatCode(
+						() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/", "info.csv"), csvRows))
 				.doesNotThrowAnyException();
 	}
 

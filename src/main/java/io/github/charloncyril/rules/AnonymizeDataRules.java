@@ -6,7 +6,6 @@ import java.nio.charset.StandardCharsets;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 
-
 /**
  * 
  * Class bringing all the rules used for anonymization
@@ -42,9 +41,7 @@ public class AnonymizeDataRules {
 	public static String randomLetter(String s) {
 		Preconditions.checkNotNull(s);
 		Preconditions.checkArgument(!s.isEmpty());
-		return Hashing.sha256()
-		  .hashString(s, StandardCharsets.UTF_8)
-		  .toString().substring(0, s.length());
+		return Hashing.sha256().hashString(s, StandardCharsets.UTF_8).toString().substring(0, s.length());
 	}
 
 	/**

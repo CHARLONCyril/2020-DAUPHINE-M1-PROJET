@@ -14,7 +14,7 @@ public class AnonymizeDataRulesTest {
 		assertTrue(initialData.length() == actualData.length());
 		assertNotEquals(initialData, actualData);
 	}
-	
+
 	@Test
 	public void test_randomLetterForLocalPart() {
 		String initialData = "xxxxx@gmail.com";
@@ -22,13 +22,13 @@ public class AnonymizeDataRulesTest {
 		String actualData = AnonymizeDataRules.randomLetterForLocalPart(initialData);
 		assertTrue(initialData.length() == actualData.length());
 		assertEquals(initialData.substring(index), actualData.substring(index));
-		assertNotEquals(initialData.substring(0,index), actualData);
+		assertNotEquals(initialData.substring(0, index), actualData);
 	}
-	
-	@Test 
+
+	@Test
 	public void test_getMethod() {
 		Assertions.assertThatCode(() -> AnonymizeDataRules.getMethod("randomLetter", String.class))
-		.doesNotThrowAnyException();
+				.doesNotThrowAnyException();
 		assertThrows(NoSuchMethodException.class, () -> {
 			AnonymizeDataRules.getMethod("unknowMethod", String.class);
 		});

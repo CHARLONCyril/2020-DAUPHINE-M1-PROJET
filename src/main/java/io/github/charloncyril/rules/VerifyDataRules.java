@@ -40,9 +40,9 @@ public class VerifyDataRules {
 	 */
 	public static boolean beAnAge(String s) {
 		Preconditions.checkNotNull(s);
+		Preconditions.checkArgument(FunctionsUtils.isInt(s));
 		int age = Integer.parseInt(s);
 		return (age >= 0 && age <= 120);
-
 	}
 
 	/**

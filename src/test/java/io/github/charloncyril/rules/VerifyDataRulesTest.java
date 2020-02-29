@@ -14,14 +14,14 @@ public class VerifyDataRulesTest {
 		assertTrue(VerifyDataRules.beAnAge("50"));
 		assertFalse(VerifyDataRules.beAnAge("-1"));
 	}
-	
+
 	@Test
 	public void test_beAnEmail() {
 		assertTrue(VerifyDataRules.beAnEmail("xxxx@gmail.com"));
 		assertFalse(VerifyDataRules.beAnEmail("xxxxgmail.com"));
 		assertFalse(VerifyDataRules.beAnEmail("xxxx@"));
 	}
-	
+
 	@Test
 	public void test_beAnEmailDauhpine() {
 		assertTrue(VerifyDataRules.beAnDauphineEmail("xxxx@dauphine.eu"));
@@ -29,11 +29,11 @@ public class VerifyDataRulesTest {
 		assertTrue(VerifyDataRules.beAnDauphineEmail("xxxx@lamsade.dauphine.fr"));
 		assertFalse(VerifyDataRules.beAnDauphineEmail("xxxx@gmail.com"));
 	}
-	
-	@Test 
+
+	@Test
 	public void test_getMethod() {
 		Assertions.assertThatCode(() -> VerifyDataRules.getMethod("beAnDauphineEmail", String.class))
-		.doesNotThrowAnyException();
+				.doesNotThrowAnyException();
 		assertThrows(NoSuchMethodException.class, () -> {
 			VerifyDataRules.getMethod("unknowMethod", String.class);
 		});
