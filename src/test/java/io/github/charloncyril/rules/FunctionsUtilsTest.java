@@ -92,7 +92,7 @@ public class FunctionsUtilsTest {
 	public void test_verifData() {
 		FunctionsUtils.verifData(myCsv, typeColumn, rulesColumn, RESSOURCES_FOLDER_TEST.toString(),
 				"testVerifyData.csv");
-		assertTrue(new File(RESSOURCES_FOLDER_TEST + "\\testVerifyData.csv").exists());
+		assertTrue(new File(RESSOURCES_FOLDER_TEST + "/testVerifyData.csv").exists());
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class FunctionsUtilsTest {
 		myCsv.add(0, header);
 		FunctionsUtils.anonimyzeData(myCsv, typeColumn, anonymizeColumn, RESSOURCES_FOLDER_TEST.toString(),
 				"testAnonymizeData.csv");
-		assertTrue(new File(RESSOURCES_FOLDER_TEST + "\\testAnonymizeData.csv").exists());
+		assertTrue(new File(RESSOURCES_FOLDER_TEST + "/testAnonymizeData.csv").exists());
 	}
 
 	public void test_allRulesValid() {
