@@ -10,8 +10,8 @@ import org.junit.Test;
 import io.github.charloncyril.file_utils.FileUtils;
 
 public class LoggerTest {
-	
-	private static final Path RESSOURCES_FOLDER_TEST_LOG = Paths.get("src", "main", "resources","logs");
+
+	private static final Path RESSOURCES_FOLDER_TEST_LOG = Paths.get("src", "main", "resources", "logs");
 
 	@Test
 	public void test_logContentParse() {

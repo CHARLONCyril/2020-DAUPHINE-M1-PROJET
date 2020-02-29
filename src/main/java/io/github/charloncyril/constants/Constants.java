@@ -53,6 +53,11 @@ public final class Constants {
 
 	public static final Path RESSOURCES_FOLDER = Paths.get("src", "main", "resources");
 
+	/**
+	 * OUTPUT_DIRECTORY is the directory where result will be stored
+	 */
+	public static final String OUTPUT_DIRECTORY = "/output_directory";
+
 	public static char getFieldDelimitterForParsing() {
 		return FIELD_DELIMITER_FOR_PARSING;
 	}

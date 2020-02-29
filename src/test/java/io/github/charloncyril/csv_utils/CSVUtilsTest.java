@@ -17,7 +17,7 @@ public class CSVUtilsTest {
 		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
 		assertNotNull(csvRows);
 	}
-	
+
 	@Test
 	public void test_readColumnOrientedFile() {
 		csvColumns = CSVUtils.readColumnOrientedFile(FileUtils.getFile("src/test/resources/", "column.csv"));
@@ -27,9 +27,8 @@ public class CSVUtilsTest {
 	@Test
 	public void test_writeIntoCSVFile() {
 		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
-		Assertions
-				.assertThatCode(
-						() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/", "info.csv"), csvRows))
+		Assertions.assertThatCode(
+				() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/", "info.csv"), csvRows, false))
 				.doesNotThrowAnyException();
 	}
 
