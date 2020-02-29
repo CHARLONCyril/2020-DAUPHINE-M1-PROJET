@@ -64,5 +64,11 @@
 		    <artifactId>commons-validator</artifactId>
 		    <version>1.6</version>
 		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.zeroturnaround/zt-zip -->
+		<dependency>
+		    <groupId>org.zeroturnaround</groupId>
+		    <artifactId>zt-zip</artifactId>
+		    <version>1.14</version>
+		</dependency>
 	</dependencies>
 </project>
