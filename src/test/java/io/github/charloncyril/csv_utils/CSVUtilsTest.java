@@ -10,18 +10,23 @@ import io.github.charloncyril.file_utils.FileUtils;
 public class CSVUtilsTest {
 
 	private List<String[]> csvRows;
-
-	public CSVUtilsTest() {
-		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
-	}
+	private List<String[]> csvColumns;
 
 	@Test
 	public void test_readRowOrientedFile() {
+		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
 		assertNotNull(csvRows);
+	}
+	
+	@Test
+	public void test_readColumnOrientedFile() {
+		csvColumns = CSVUtils.readColumnOrientedFile(FileUtils.getFile("src/test/resources/", "column.csv"));
+		assertNotNull(csvColumns);
 	}
 
 	@Test
 	public void test_writeIntoCSVFile() {
+		csvRows = CSVUtils.readRowOrientedFile(FileUtils.getFile("src/test/resources/", "info.csv"));
 		Assertions
 				.assertThatCode(
 						() -> CSVUtils.writeIntoCSVFile(FileUtils.getFile("src/test/resources/", "info.csv"), csvRows))
