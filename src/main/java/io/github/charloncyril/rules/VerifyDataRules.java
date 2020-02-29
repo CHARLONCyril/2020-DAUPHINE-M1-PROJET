@@ -42,7 +42,6 @@ public class VerifyDataRules {
 		Preconditions.checkNotNull(s);
 		int age = Integer.parseInt(s);
 		return (age >= 0 && age <= 120);
-
 	}
 
 	/**
