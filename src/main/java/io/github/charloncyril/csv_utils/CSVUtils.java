@@ -1,12 +1,16 @@
 package io.github.charloncyril.csv_utils;
 
 import com.google.common.base.Preconditions;
+import com.univocity.parsers.common.processor.ColumnProcessor;
 import com.univocity.parsers.common.processor.RowListProcessor;
 import com.univocity.parsers.csv.CsvParser;
 import com.univocity.parsers.csv.CsvParserSettings;
 import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import io.github.charloncyril.constants.Constants;
+import io.github.charloncyril.log.Logger;
+import io.github.charloncyril.rules.FunctionsUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +68,23 @@ public class CSVUtils {
 		rows.add(rowProcessor.getHeaders());
 		rows.addAll(rowProcessor.getRows());
 		return rows;
+	}
+	
+	public static List<String[]> readColumnOrientedFile(File fileName) {
+
+		ColumnProcessor columnProcessor = new ColumnProcessor();
+		parserSettings.setProcessor(columnProcessor);
+		CsvParser parser = new CsvParser(parserSettings);
+		parser.parse(fileName);
+		List<String[]> csv = new ArrayList<>();
+		List<List<String>> column = new ArrayList<>();
+		column.addAll(columnProcessor.getColumnValuesAsList());
+		for (List<String> c : column) {
+			csv.add(FunctionsUtils.convertCollectionToArray(c));
+		}
+		Logger.logContentParse(CSVUtils.class, csv);
+		return csv;
+
 	}
 
 	/**
