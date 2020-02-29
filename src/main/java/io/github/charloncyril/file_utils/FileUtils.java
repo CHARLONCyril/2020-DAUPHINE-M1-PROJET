@@ -3,7 +3,7 @@ package io.github.charloncyril.file_utils;
 import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
+import static io.github.charloncyril.constants.Constants.RESSOURCES_FOLDER;
 import com.google.common.base.Preconditions;
 
 public class FileUtils {
@@ -30,10 +30,9 @@ public class FileUtils {
 	 * @return the file expected
 	 */
 	public static File getFile(String folder, String fileName) {
-		Preconditions.checkNotNull(folder);
-		Preconditions.checkArgument(!folder.isEmpty());
 		Preconditions.checkNotNull(fileName);
 		Preconditions.checkArgument(!fileName.isEmpty());
+		folder = (folder == null || folder.isEmpty()) ? RESSOURCES_FOLDER.toString() : folder;
 		return new File(getPath(folder, fileName).toString());
 	}
 
