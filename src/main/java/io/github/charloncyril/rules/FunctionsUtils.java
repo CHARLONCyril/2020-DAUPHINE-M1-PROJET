@@ -14,6 +14,8 @@ import com.google.common.base.Preconditions;
 import io.github.charloncyril.core.ReflectionUtils;
 import io.github.charloncyril.csv_utils.CSVUtils;
 import io.github.charloncyril.file_utils.FileUtils;
+import io.github.charloncyril.log.LogLevel;
+import io.github.charloncyril.log.Logger;
 import io.github.charloncyril.models.TypeData;
 
 public class FunctionsUtils {
@@ -143,14 +145,18 @@ public class FunctionsUtils {
 				if (allRulesValid(row, rowToWrite.get(0), rulesColumn)) {
 					rowToWrite.add(row);
 				} else {
+					Logger.logMsg(FunctionsUtils.class,
+							"Using default char for the following line :\n " + Arrays.asList(row), LogLevel.INFO);
 					rowToWrite.add(new String[] { "" });
 				}
 			} else {
+				Logger.logMsg(FunctionsUtils.class,
+						"A value doesn't respect field format for the following line :\n " + Arrays.asList(row),
+						LogLevel.INFO);
 				rowToWrite.add(new String[] { "" }); // we set empty value, like that we will write the default value
 				// during writing process
 			}
 		}
-		// Logger.logContentParse(FunctionsUtils.class, rowToWrite);
 		CSVUtils.writeIntoCSVFile(FileUtils.getFile(folder, fileName), rowToWrite, choice);
 	}
 
@@ -168,14 +174,13 @@ public class FunctionsUtils {
 		}
 		for (int i = 0; i < header.length; i++) {
 			try {
-				System.out.println(header[i] + " => " + row[i]);
 				if ((typeColumn.get(header[i]) == null) || !checkColumnType(row[i], typeColumn.get(header[i]))) {
-					System.out.println("cyril");
+					Logger.logMsg(FunctionsUtils.class, "type is required or data type is invalid", LogLevel.WARN);
 					return false;
 				}
 			} catch (NullPointerException e) {
 				// TODO: Add log for each exceptions when it will be implemented
-				System.out.println("charlon");
+				Logger.logMsg(FunctionsUtils.class, "An error occured " + e.toString(), LogLevel.ERROR);
 				return false;
 			}
 		}
@@ -193,10 +198,12 @@ public class FunctionsUtils {
 		for (int i = 0; i < header.length; i++) {
 			try {
 				if ((rulesColumn.get(header[i]) != null) && !checkColumnRules(row[i], rulesColumn.get(header[i]))) {
+					Logger.logMsg(FunctionsUtils.class, row[i] + " doesn't respect the following rules :\n"
+							+ Arrays.asList(rulesColumn.get(header[i])), LogLevel.WARN);
 					return false;
 				}
 			} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-				// TODO: Add log for each exceptions when it will be implemented
+				Logger.logMsg(FunctionsUtils.class, "An error as occured " + e.toString(), LogLevel.ERROR);
 				return false;
 			}
 		}
@@ -233,9 +240,11 @@ public class FunctionsUtils {
 								convertCollectionToArray(Arrays.asList(csvHeader[i])), typeColumn)) {
 							rowValueAnonymized.add(dataAnonymized(row[i], anonymizeColumn.get(csvHeader[i])));
 						} else {
+							Logger.logMsg(FunctionsUtils.class, "Default value is applied ", LogLevel.WARN);
 							rowValueAnonymized.add("");
 						}
 					} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+						Logger.logMsg(FunctionsUtils.class, "An error as occured " + e.toString(), LogLevel.ERROR);
 						rowValueAnonymized.add("");
 					}
 				}

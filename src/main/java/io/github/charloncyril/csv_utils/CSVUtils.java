@@ -9,6 +9,7 @@ import com.univocity.parsers.csv.CsvWriter;
 import com.univocity.parsers.csv.CsvWriterSettings;
 import io.github.charloncyril.constants.Constants;
 import io.github.charloncyril.file_utils.ZipUtils;
+import io.github.charloncyril.log.LogLevel;
 import io.github.charloncyril.log.Logger;
 import io.github.charloncyril.rules.FunctionsUtils;
 import static io.github.charloncyril.constants.Constants.RESSOURCES_FOLDER;
@@ -69,6 +70,7 @@ public class CSVUtils {
 		List<String[]> rows = new ArrayList<>();
 		rows.add(rowProcessor.getHeaders());
 		rows.addAll(rowProcessor.getRows());
+		Logger.logContentParse(CSVUtils.class, rows);
 		return rows;
 	}
 
@@ -106,6 +108,7 @@ public class CSVUtils {
 		}
 		writer.close();
 		if (wantToZipFile) {
+			Logger.logMsg(CSVUtils.class, "ziping file in progess", LogLevel.INFO);
 			ZipUtils.zipFile(fileName, RESSOURCES_FOLDER + OUTPUT_DIRECTORY + "/"
 					+ fileName.getName().substring(0, fileName.getName().lastIndexOf('.')) + ".zip");
 		}

@@ -42,8 +42,8 @@ public class App {
 						LogLevel.TRACE);
 				fileName = sc.nextLine();
 				ZipUtils.unzipFile(RESSOURCES_FOLDER + "/" + INPUT_DIRECTORY + "/" + archiveOrFileName,
-						FileUtils.getFile(RESSOURCES_FOLDER + "/"+INPUT_DIRECTORY, fileName));
-				fileName = "unziped_"+ fileName;
+						FileUtils.getFile(RESSOURCES_FOLDER + "/" + INPUT_DIRECTORY, fileName));
+				fileName = "unziped_" + fileName;
 			} else {
 				fileName = archiveOrFileName;
 			}
