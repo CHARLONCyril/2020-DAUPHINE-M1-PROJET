@@ -6,6 +6,9 @@ import java.nio.file.Paths;
 import static io.github.charloncyril.constants.Constants.RESSOURCES_FOLDER;
 import com.google.common.base.Preconditions;
 
+import io.github.charloncyril.log.LogLevel;
+import io.github.charloncyril.log.Logger;
+
 public class FileUtils {
 	private FileUtils() {
 		throw new IllegalStateException("Utility class");
@@ -21,6 +24,7 @@ public class FileUtils {
 		Preconditions.checkArgument(!folder.isEmpty());
 		Preconditions.checkNotNull(fileName);
 		Preconditions.checkArgument(!fileName.isEmpty());
+		Logger.logMsg(FileUtils.class, "Path : " + folder + "/" + fileName, LogLevel.INFO);
 		return Paths.get(folder, fileName);
 	}
 

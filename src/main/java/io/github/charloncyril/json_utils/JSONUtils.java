@@ -9,6 +9,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.google.gson.JsonSyntaxException;
 
+import io.github.charloncyril.log.Logger;
+
 public class JSONUtils {
 
 	private JSONUtils() {
@@ -34,6 +36,7 @@ public class JSONUtils {
 		Gson gson = new Gson();
 		@SuppressWarnings("unchecked")
 		T[] jsonFile = (T[]) gson.fromJson(new FileReader(fileName), className);
+		Logger.logContentParse(JSONUtils.class, jsonFile);
 		return jsonFile;
 	}
 
